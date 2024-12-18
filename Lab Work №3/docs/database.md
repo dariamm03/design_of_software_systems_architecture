@@ -1,4 +1,5 @@
-![бд](https://github.com/user-attachments/assets/3822e8c0-76f5-43cc-8fb4-f2585ba004fe)
+![image](https://github.com/user-attachments/assets/1c27f150-eec7-4ab5-8cad-52aca3effa09)
+
 1. User (Пользователь)
    - id: уникальный идентификатор пользователя.
    - username: имя пользователя, используемое для входа.
