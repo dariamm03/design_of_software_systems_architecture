@@ -1,0 +1,122 @@
+import requests
+from flask import Flask, jsonify, request
+
+app = Flask(__name__)  # Исправлено на __name__
+
+# Токен Telegram-бота и ID чата
+TELEGRAM_TOKEN = '8105294907:AAGzxwCWn174vlDuYJ6hEZKSM0d6hjkU1qg'
+CHAT_ID = '922580670'
+
+
+def send_telegram_message(message):
+    url = f'https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage'
+    payload = {
+        'chat_id': CHAT_ID,
+        'text': message,
+        'parse_mode': 'Markdown'
+    }
+    requests.post(url, json=payload)
+
+# Пример данных пользователей
+users = ["user1@example.com", "user2@example.com", "user@example.com"]
+
+# Пример данных логов
+logs = {
+    "user@example.com": ["Log 1", "Log 2"],
+}
+
+
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    return jsonify(users), 200
+
+
+@app.route('/api/logs', methods=['GET'])
+def get_logs():
+    user = request.args.get('user')
+    if user not in logs:
+        return jsonify({"error": "Logs not found for the specified user"}), 404
+
+    message = f"Запрошены логи для пользователя: {user}\nЛоги: {logs[user]}"
+    send_telegram_message(message)
+
+    return jsonify(logs[user]), 200
+
+
+@app.route('/api/logs/<int:log_id>', methods=['DELETE'])
+def delete_log(log_id):
+    user_logs = logs.get("user@example.com", [])
+    if log_id >= len(user_logs) or log_id < 0:
+        return jsonify({"error": "Log not found"}), 404
+
+    deleted_log = user_logs[log_id]
+    del user_logs[log_id]  # Удаляем лог
+
+    message = f"Лог удален: {deleted_log}"
+    send_telegram_message(message)
+
+    return jsonify({"message": "Log deleted"}), 204
+
+
+@app.route('/api/logs', methods=['POST'])
+def create_log():
+    data = request.get_json()
+
+    # Проверяем наличие необходимых полей
+    user = data.get('user')
+    log = data.get('log')
+
+    if not user or not log:
+        return jsonify({"error": "Bad Request: 'user' and 'log' fields are required"}), 400
+
+    if user not in logs:
+        logs[user] = []
+
+    logs[user].append(log)
+
+    message = f"Создан новый лог для пользователя: {user}\nЛог: {log}"
+    send_telegram_message(message)
+
+    return jsonify({"message": "Log created"}), 201
+
+
+@app.route('/api/logs/<int:log_id>', methods=['PUT'])
+def update_log_by_id(log_id):
+    user_logs = logs.get("user@example.com", [])
+    if log_id >= len(user_logs) or log_id < 0:
+        return jsonify({"error": "Log not found"}), 404
+
+    data = request.get_json()
+    new_log = data.get('log')
+    user_logs[log_id] = new_log
+
+    message = f"Лог обновлен: {new_log}"
+    send_telegram_message(message)
+
+    return jsonify({"message": "Log updated"}), 200
+
+
+@app.route('/api/logs/<string:user>', methods=['PUT'])
+def update_log_by_user(user):
+    data = request.get_json()
+
+    # Проверяем наличие обязательного поля 'log'
+    log = data.get('log')
+
+    if not log:
+        return jsonify({"error": "Bad Request: 'log' field is required"}), 400
+
+    if user not in logs or not logs[user]:
+        return jsonify({"error": "Not Found: User logs not found"}), 404
+
+    # Обновление последнего лога для данного пользователя
+    logs[user][-1] = log  # Замените последний лог новым
+
+    message = f"Лог обновлен для пользователя: {user}\nНовый лог: {log}"
+    send_telegram_message(message)
+
+    return jsonify({"message": "Log updated"}), 200
+
+
+if __name__ == '__main__':  # Исправлено на __name__ и __main__
+    app.run(debug=True)
