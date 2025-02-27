@@ -1,4 +1,4 @@
-Также были добавлены интеграционные тесты
+Также были добавлены интеграционные тесты:
 
 import unittest
 import requests
@@ -25,10 +25,10 @@ class TestMicroservices(unittest.TestCase):
 
 
 
-python -m unittest discover tests
-...
-----------------------------------------------------------------------
-Ran 3 tests in 5.168s
+python -m unittest discover tests <br>
+... <br>
+---------------------------------------------------------------------- <br>
+Ran 3 tests in 5.168s <br>
 
 OK
 
