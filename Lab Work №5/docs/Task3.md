@@ -35,3 +35,5 @@ jobs:
 При каждом пуше в ветку main будет выполняться:
 Скачивание репозитория, сборка Docker-образов для сервисов, запуск тестов.
 ![image](https://github.com/user-attachments/assets/73379d88-4b57-4c76-93cd-4d5d6e38fb7a)
+
+https://github.com/dariamm03/microservices_project
