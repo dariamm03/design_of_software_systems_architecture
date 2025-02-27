@@ -26,11 +26,11 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 
 ### Dockerfile:
-FROM python:3.9
-WORKDIR /app
-COPY log_service.py .
-RUN pip install Flask
-CMD ["python", "log_service.py"]
+FROM python:3.9<br>
+WORKDIR /app<br>
+COPY log_service.py .<br>
+RUN pip install Flask<br>
+CMD ["python", "log_service.py"]<br>
 
 ## Папка notification_service:
 
@@ -49,27 +49,27 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5001)
 
 ### Dockerfile:
-FROM python:3.9
-WORKDIR /app
-COPY notification_service.py .
-RUN pip install Flask
-CMD ["python", "notification_service.py"]
+FROM python:3.9<br>
+WORKDIR /app<br>
+COPY notification_service.py .<br>
+RUN pip install Flask<br>
+CMD ["python", "notification_service.py"]<br>
 
-Сборка Docker-образов:
-Чтобы упаковать эти сервисы в Docker-контейнеры, нужно создать Docker-образы. Для этого:
-Команду сборки образа:
-docker build -t log_service ./log_service
-docker build -t notification_service ./notification_service
-Эти команды создадут образы с именами log_service и notification_service.
+Сборка Docker-образов:<br>
+Чтобы упаковать эти сервисы в Docker-контейнеры, нужно создать Docker-образы. Для этого:<br>
+Команду сборки образа:<br>
+docker build -t log_service ./log_service<br>
+docker build -t notification_service ./notification_service<br>
+Эти команды создадут образы с именами log_service и notification_service.<br>
 
-Запуск контейнеров:
-После того как образы созданы, запускаю контейнеры:
-docker run -d --name log_service -p 5000:5000 log_service
-docker run -d --name notification_service -p 5001:5001 notification_service
-создадутся и запустят контейнеры с сервисами, доступные на портах 5000 и 5001.
+Запуск контейнеров:<br>
+После того как образы созданы, запускаю контейнеры:<br>
+docker run -d --name log_service -p 5000:5000 log_service<br>
+docker run -d --name notification_service -p 5001:5001 notification_service<br>
+создадутся и запустят контейнеры с сервисами, доступные на портах 5000 и 5001.<br>
 
-Проверка работы контейнеров:
-docker ps
-CONTAINER ID   IMAGE                  COMMAND                  CREATED             STATUS             PORTS                    NAMES
-281c3207be53   notification_service   "python notification…"   About an hour ago   Up About an hour   0.0.0.0:5001->5001/tcp   notification_service
-ac7add9836f2   log_service            "python log_service.…"   About an hour ago   Up About an hour   0.0.0.0:5000->5000/tcp   log_service
+Проверка работы контейнеров:<br>
+docker ps<br>
+CONTAINER ID   IMAGE                  COMMAND                  CREATED             STATUS             PORTS                    NAMES<br>
+281c3207be53   notification_service   "python notification…"   About an hour ago   Up About an hour   0.0.0.0:5001->5001/tcp   notification_service<br>
+ac7add9836f2   log_service            "python log_service.…"   About an hour ago   Up About an hour   0.0.0.0:5000->5000/tcp   log_service<br>
