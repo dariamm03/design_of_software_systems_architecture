@@ -77,13 +77,13 @@ class NotificationBuilder:<br>
 1.	Adapter (Адаптер)<br>
  ![image](https://github.com/user-attachments/assets/17c38056-1ca7-485b-b2fa-cdda7f2d8a03)
 
-Код:
-class NotificationAdapter:
-    def __init__(self, notification):
-        self.notification = notification
+Код:<br>
+class NotificationAdapter:<br>
+    def __init__(self, notification):<br>
+        self.notification = notification<br>
 
-    def send_message(self, text):
-        self.notification.send(text)
+    def send_message(self, text):<br>
+        self.notification.send(text)<br>
 Позволяет использовать один интерфейс для отправки уведомлений в Telegram, Email и Slack. Чтобы не менять код старого класса, а просто написать адаптер, который будет работать с новым API.<br>
 2.	Facade (Фасад)<br>
  ![image](https://github.com/user-attachments/assets/da47c800-d841-4724-9664-10860e3c558c)
